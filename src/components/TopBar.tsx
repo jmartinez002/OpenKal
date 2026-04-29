@@ -54,7 +54,11 @@ export default function TopBar({ total, onClear }: Props) {
     >
       {/* Centered branding — clickable to clear */}
       <button
-        onClick={onClear}
+        onClick={() => {
+          onClear();
+          setGoal(null);
+          try { localStorage.removeItem(GOAL_KEY); } catch { }
+        }}
         style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
       >
         <span
