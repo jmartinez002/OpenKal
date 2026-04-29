@@ -21,6 +21,12 @@ export default function Page() {
     async (input: string) => {
       vibrate(10);
 
+      // If the most recent entry is an error, replace it instead of stacking
+      const lastEntry = entries[0];
+      if (lastEntry?.status === 'error') {
+        removeEntry(lastEntry.id);
+      }
+
       const id = crypto.randomUUID();
       addEntry({
         id,
