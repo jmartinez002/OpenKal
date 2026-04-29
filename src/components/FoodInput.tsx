@@ -121,9 +121,7 @@ export default function FoodInput({ onSubmit, loading }: Props) {
 
       {/* Input bar */}
       <div
-        className="px-3 pt-3 pb-3"
-        style={{ borderTop: '1px solid #2e3140', borderBottom: '1px solid #2e3140' }}
-      >
+        className="px-3 pt-3 pb-3">
         <div
           className="flex items-end gap-2 rounded-2xl px-3 py-2"
           style={{ backgroundColor: '#22242d', border: '1px solid #2e3140' }}
