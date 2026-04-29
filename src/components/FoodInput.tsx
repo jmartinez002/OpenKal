@@ -132,7 +132,7 @@ export default function FoodInput({ onSubmit, loading }: Props) {
             onKeyDown={handleKeyDown}
             onInput={handleInput}
             onFocus={handleFocus}
-            placeholder="What did you eat?"
+            placeholder='What did you eat? (or "500 cal")'
             rows={1}
             autoFocus
             className="flex-1 resize-none bg-transparent outline-none placeholder-neutral-600"

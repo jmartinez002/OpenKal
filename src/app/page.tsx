@@ -7,6 +7,7 @@ import TopBar from '@/components/TopBar';
 import FoodInput from '@/components/FoodInput';
 import FoodFeed from '@/components/FoodFeed';
 import type { EstimateResponse } from '@/lib/types';
+import { parseManualCalories } from '@/lib/parseCalories';
 
 export default function Page() {
   const { entries, addEntry, removeEntry, updateEntry } = useEntries();
@@ -28,6 +29,21 @@ export default function Page() {
       }
 
       const id = crypto.randomUUID();
+      const manual = parseManualCalories(input);
+
+      if (manual) {
+        // Instant local entry — no API call needed
+        addEntry({
+          id,
+          input,
+          items: [{ name: manual.name, calories: manual.calories }],
+          total_calories: manual.calories,
+          status: 'done',
+          timestamp: Date.now(),
+        });
+        return;
+      }
+
       addEntry({
         id,
         input,
