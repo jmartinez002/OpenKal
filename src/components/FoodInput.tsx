@@ -70,7 +70,6 @@ export default function FoodInput({ onSubmit, loading }: Props) {
               lineHeight: '1.5',
               color: '#e8eaf0',
               overflowY: 'auto',
-              textAlign: 'center',
             }}
           />
 
