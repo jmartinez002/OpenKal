@@ -4,7 +4,7 @@ import { useRef, useState, KeyboardEvent } from 'react';
 import { getSuggestions } from '@/lib/foods';
 
 interface Props {
-  onSubmit: (input: string) => void;
+  onSubmit: (input: string, calories?: number) => void;
   loading: boolean;
 }
 
@@ -16,10 +16,10 @@ export default function FoodInput({ onSubmit, loading }: Props) {
   const suggestions = getSuggestions(value);
   const showSuggestions = suggestions.length > 0 && value.trim().length > 0;
 
-  const handleSubmit = (text = value) => {
+  const handleSubmit = (text = value, calories?: number) => {
     const trimmed = text.trim();
     if (!trimmed || loading) return;
-    onSubmit(trimmed);
+    onSubmit(trimmed, calories);
     setValue('');
     setActiveIndex(-1);
     if (textareaRef.current) textareaRef.current.style.height = 'auto';
@@ -40,7 +40,8 @@ export default function FoodInput({ onSubmit, loading }: Props) {
       }
       if (e.key === 'Enter' && activeIndex >= 0) {
         e.preventDefault();
-        handleSubmit(suggestions[activeIndex]);
+        const s = suggestions[activeIndex];
+        handleSubmit(s.name, s.calories);
         return;
       }
       if (e.key === 'Escape') {
@@ -91,24 +92,28 @@ export default function FoodInput({ onSubmit, loading }: Props) {
         >
           {suggestions.map((suggestion, i) => (
             <button
-              key={suggestion}
+              key={suggestion.name}
               onMouseDown={e => {
-                e.preventDefault(); // prevent textarea blur
-                handleSubmit(suggestion);
+                e.preventDefault();
+                handleSubmit(suggestion.name, suggestion.calories);
               }}
               style={{
-                display: 'block',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
                 width: '100%',
                 textAlign: 'left',
                 padding: '11px 16px',
                 fontSize: '15px',
-                color: i === activeIndex ? '#e8eaf0' : '#9ca3af',
                 backgroundColor: i === activeIndex ? '#2a2d38' : 'transparent',
                 borderBottom: i < suggestions.length - 1 ? '1px solid #2a2d38' : 'none',
                 cursor: 'pointer',
               }}
             >
-              {suggestion}
+              <span style={{ color: i === activeIndex ? '#e8eaf0' : '#9ca3af' }}>{suggestion.name}</span>
+              <span style={{ color: '#22c55e', fontSize: '13px', fontWeight: 600, marginLeft: '12px', flexShrink: 0 }}>
+                {suggestion.calories} kcal
+              </span>
             </button>
           ))}
         </div>
@@ -132,7 +137,7 @@ export default function FoodInput({ onSubmit, loading }: Props) {
             onKeyDown={handleKeyDown}
             onInput={handleInput}
             onFocus={handleFocus}
-            placeholder='What did you eat? (or "500 cal")'
+            placeholder='What did you eat?'
             rows={1}
             autoFocus
             className="flex-1 resize-none bg-transparent outline-none placeholder-neutral-600"

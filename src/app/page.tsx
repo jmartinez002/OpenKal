@@ -19,7 +19,7 @@ export default function Page() {
     .reduce((sum, e) => sum + e.total_calories, 0);
 
   const handleSubmit = useCallback(
-    async (input: string) => {
+    async (input: string, knownCalories?: number) => {
       vibrate(10);
 
       // If the most recent entry is an error, replace it instead of stacking
@@ -29,6 +29,20 @@ export default function Page() {
       }
 
       const id = crypto.randomUUID();
+
+      // Known food from dropdown — instant entry, no API call
+      if (knownCalories !== undefined) {
+        addEntry({
+          id,
+          input,
+          items: [{ name: input, calories: knownCalories }],
+          total_calories: knownCalories,
+          status: 'done',
+          timestamp: Date.now(),
+        });
+        return;
+      }
+
       const manual = parseManualCalories(input);
 
       if (manual) {
