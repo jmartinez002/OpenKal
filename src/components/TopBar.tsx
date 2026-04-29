@@ -107,9 +107,9 @@ export default function TopBar({ total, onClear }: Props) {
                 </span>
               ) : (
                 <>
-                  <span className="font-mono text-sm font-semibold" style={{ color: totalColor }}>
-                    <AnimatedNumber value={total} />
-                    {goal ? `/${goal.toLocaleString()}` : ''}
+                  <span className="font-mono text-sm font-semibold">
+                    <span style={{ color: totalColor }}><AnimatedNumber value={total} /></span>
+                    {goal ? <span style={{ color: '#22c55e' }}>/{goal.toLocaleString()}</span> : ''}
                   </span>
                   <span className="text-xs" style={{ color: '#6b7280' }}>kcal</span>
                 </>
