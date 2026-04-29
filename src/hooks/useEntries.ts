@@ -6,6 +6,7 @@ import {
   addEntry as storageAdd,
   removeEntry as storageRemove,
   updateEntry as storageUpdate,
+  clearEntries as storageClear,
 } from '@/lib/storage';
 import type { FeedEntry } from '@/lib/types';
 
@@ -28,5 +29,9 @@ export function useEntries() {
     setEntries(storageUpdate(id, patch));
   }, []);
 
-  return { entries, addEntry, removeEntry, updateEntry };
+  const clearEntries = useCallback(() => {
+    setEntries(storageClear());
+  }, []);
+
+  return { entries, addEntry, removeEntry, updateEntry, clearEntries };
 }

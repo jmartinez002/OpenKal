@@ -52,3 +52,8 @@ export function updateEntry(id: string, patch: Partial<FeedEntry>): FeedEntry[] 
   persist(updated);
   return updated;
 }
+
+export function clearEntries(): FeedEntry[] {
+  persist([]);
+  return [];
+}

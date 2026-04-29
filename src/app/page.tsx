@@ -10,7 +10,7 @@ import type { EstimateResponse } from '@/lib/types';
 import { parseManualCalories } from '@/lib/parseCalories';
 
 export default function Page() {
-  const { entries, addEntry, removeEntry, updateEntry } = useEntries();
+  const { entries, addEntry, removeEntry, updateEntry, clearEntries } = useEntries();
   const { vibrate } = useHaptic();
   const [submitting, setSubmitting] = useState(false);
 
@@ -106,7 +106,7 @@ export default function Page() {
         paddingTop: 'env(safe-area-inset-top, 0px)',
       }}
     >
-      <TopBar total={total} />
+      <TopBar total={total} onClear={clearEntries} />
 
       {/* Upper half — logo centered, hint when empty */}
       <div

@@ -5,11 +5,12 @@ import AnimatedNumber from './AnimatedNumber';
 
 interface Props {
   total: number;
+  onClear: () => void;
 }
 
 const GOAL_KEY = 'openkal_goal';
 
-export default function TopBar({ total }: Props) {
+export default function TopBar({ total, onClear }: Props) {
   const [goal, setGoal] = useState<number | null>(null);
   const [hovered, setHovered] = useState(false);
   const [editing, setEditing] = useState(false);
@@ -39,6 +40,9 @@ export default function TopBar({ total }: Props) {
     setTimeout(() => inputRef.current?.focus(), 0);
   };
 
+  const overGoal = goal !== null && total > goal;
+  const totalColor = overGoal ? '#ef4444' : '#22c55e';
+
   return (
     <div
       className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center"
@@ -48,15 +52,18 @@ export default function TopBar({ total }: Props) {
         backgroundColor: '#1a1c23'
       }}
     >
-      {/* Centered branding */}
-      <div className="flex items-center gap-2">
+      {/* Centered branding — clickable to clear */}
+      <button
+        onClick={onClear}
+        style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+      >
         <span
           className="font-semibold tracking-tight"
           style={{ color: '#e8eaf0', fontSize: '15px', letterSpacing: '-0.01em' }}
         >
           Open<span style={{ color: '#22c55e' }}>Kal</span>
         </span>
-      </div>
+      </button>
 
       {/* Calorie total — top right */}
       {(total > 0 || goal) && (
@@ -100,7 +107,7 @@ export default function TopBar({ total }: Props) {
                 </span>
               ) : (
                 <>
-                  <span className="font-mono text-sm font-semibold" style={{ color: '#22c55e' }}>
+                  <span className="font-mono text-sm font-semibold" style={{ color: totalColor }}>
                     <AnimatedNumber value={total} />
                     {goal ? `/${goal.toLocaleString()}` : ''}
                   </span>
