@@ -15,7 +15,7 @@ export default function EmptyState() {
 
       {/* Hint text */}
       <p className="text-sm text-center px-8 leading-relaxed" style={{ color: '#6b7280', maxWidth: '240px' }}>
-        Type anything you ate to log calories
+        Type in anything you ate to log your calories
       </p>
     </div>
   );
