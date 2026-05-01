@@ -1,28 +1,22 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import AnimatedNumber from './AnimatedNumber';
 
 interface Props {
   total: number;
+  goal: number | null;
+  setGoal: (g: number | null) => void;
   onClear: () => void;
 }
 
 const GOAL_KEY = 'openkal_goal';
 
-export default function TopBar({ total, onClear }: Props) {
-  const [goal, setGoal] = useState<number | null>(null);
+export default function TopBar({ total, goal, setGoal, onClear }: Props) {
   const [hovered, setHovered] = useState(false);
   const [editing, setEditing] = useState(false);
   const [inputVal, setInputVal] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem(GOAL_KEY);
-      if (stored) setGoal(parseInt(stored, 10));
-    } catch { }
-  }, []);
 
   const saveGoal = (val: string) => {
     const num = parseInt(val, 10);
@@ -54,11 +48,7 @@ export default function TopBar({ total, onClear }: Props) {
     >
       {/* Centered branding — clickable to clear */}
       <button
-        onClick={() => {
-          onClear();
-          setGoal(null);
-          try { localStorage.removeItem(GOAL_KEY); } catch { }
-        }}
+        onClick={onClear}
         style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
       >
         <span
