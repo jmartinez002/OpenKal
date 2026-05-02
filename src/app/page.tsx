@@ -10,6 +10,8 @@ import OnboardingOverlay from '@/components/OnboardingOverlay';
 import WeeklySummary from '@/components/WeeklySummary';
 import type { EstimateResponse } from '@/lib/types';
 import { parseManualCalories } from '@/lib/parseCalories';
+import { isSameLocalDay } from '@/lib/dateUtils';
+
 const GOAL_KEY = 'openkal_goal';
 
 export default function Page() {
@@ -32,15 +34,20 @@ export default function Page() {
     setShowOnboarding(false);
   }, []);
 
+  const [selectedDayKey, setSelectedDayKey] = useState<string | null>(null);
+
   const handleClear = useCallback(() => {
     clearEntries();
     setGoal(null);
+    setSelectedDayKey(null);
     try { localStorage.removeItem(GOAL_KEY); } catch { }
     setShowOnboarding(true);
   }, [clearEntries]);
 
   const total = useMemo(
-    () => entries.filter(e => e.status === 'done').reduce((s, e) => s + e.total_calories, 0),
+    () => entries
+      .filter(e => e.status === 'done' && isSameLocalDay(e.timestamp, Date.now()))
+      .reduce((s, e) => s + e.total_calories, 0),
     [entries]
   );
 
@@ -153,10 +160,10 @@ export default function Page() {
           <img
             src="/dcuk.png"
             alt="OpenKal"
-            style={{ height: '52px', width: 'auto', objectFit: 'contain', opacity: 0.92 }}
+            style={{ height: 'auto', width: '200px', objectFit: 'contain', opacity: 0.92 }}
           />
           <p style={{ color: '#6b7280', fontSize: '14px', textAlign: 'center', whiteSpace: 'nowrap', lineHeight: '1.5' }}>
-            Type anything you ate to log calories
+            Log anything you ate to track your calories
           </p>
         </div>
 
@@ -172,8 +179,21 @@ export default function Page() {
             paddingBottom: 'env(safe-area-inset-bottom, 0px)',
           }}
         >
-          {entries.length > 0 && <WeeklySummary entries={entries} goal={goal} />}
-          <FoodFeed entries={entries} onDelete={removeEntry} nowTs={feedNowTs} />
+          {entries.length > 0 && (
+            <WeeklySummary
+              entries={entries}
+              goal={goal}
+              selectedDayKey={selectedDayKey}
+              onDaySelect={setSelectedDayKey}
+            />
+          )}
+          <FoodFeed
+            entries={entries}
+            onDelete={removeEntry}
+            nowTs={feedNowTs}
+            filterDayKey={selectedDayKey}
+            onClearFilter={() => setSelectedDayKey(null)}
+          />
         </div>
       </div>
     </>

@@ -13,6 +13,7 @@ interface Props {
 const GOAL_KEY = 'openkal_goal';
 
 export default function TopBar({ total, goal, setGoal, onClear }: Props) {
+  const [logoHovered, setLogoHovered] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [editing, setEditing] = useState(false);
   const [inputVal, setInputVal] = useState('');
@@ -49,13 +50,17 @@ export default function TopBar({ total, goal, setGoal, onClear }: Props) {
       {/* Centered branding — clickable to clear */}
       <button
         onClick={onClear}
+        onMouseEnter={() => setLogoHovered(true)}
+        onMouseLeave={() => setLogoHovered(false)}
+        onTouchStart={() => setLogoHovered(true)}
+        onTouchEnd={() => setLogoHovered(false)}
         style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
       >
         <span
           className="font-semibold tracking-tight"
           style={{ color: '#e8eaf0', fontSize: '15px', letterSpacing: '-0.01em' }}
         >
-          Open<span style={{ color: '#22c55e' }}>Kal</span>
+          Open<span style={{ color: logoHovered ? '#22c55e' : '#e8eaf0' }}>Kal</span>
         </span>
       </button>
 
@@ -73,7 +78,6 @@ export default function TopBar({ total, goal, setGoal, onClear }: Props) {
                 if (e.key === 'Enter') saveGoal(inputVal);
                 if (e.key === 'Escape') { setEditing(false); setHovered(false); }
               }}
-              placeholder="goal"
               style={{
                 width: '72px',
                 background: 'transparent',

@@ -86,7 +86,8 @@ export default function FoodInput({ onSubmit, loading }: Props) {
             border: '1px solid #2e3140',
             borderRadius: '16px',
             marginBottom: '6px',
-            overflow: 'hidden',
+            overflowY: 'auto',
+            maxHeight: '240px',
             zIndex: 100,
           }}
         >
@@ -135,7 +136,7 @@ export default function FoodInput({ onSubmit, loading }: Props) {
             onKeyDown={handleKeyDown}
             onInput={handleInput}
             onFocus={handleFocus}
-            placeholder='What did you eat?'
+            placeholder='What did you eat today?'
             rows={1}
             autoFocus
             className="flex-1 resize-none bg-transparent outline-none placeholder-neutral-600"

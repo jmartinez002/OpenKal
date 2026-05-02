@@ -12,19 +12,16 @@ export default function OnboardingOverlay({ onDismiss }: Props) {
         position: 'fixed',
         inset: 0,
         zIndex: 50,
-        backgroundColor: 'rgba(15, 17, 22, 0.88)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         padding: '24px',
-        backdropFilter: 'blur(4px)',
+        backdropFilter: 'blur(8px)',
         WebkitBackdropFilter: 'blur(4px)',
       }}
     >
       <div
         style={{
-          backgroundColor: '#1e2029',
-          border: '1px solid #2e3040',
           borderRadius: '16px',
           padding: '32px 28px 24px',
           maxWidth: '300px',
@@ -68,6 +65,7 @@ export default function OnboardingOverlay({ onDismiss }: Props) {
             title="Add your own Kcal"
             body="Add your own Kcal by typing in the amount of calories you consumed and the name of the food."
           />
+
         </div>
 
         <p
